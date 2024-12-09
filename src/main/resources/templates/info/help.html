@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Ayuda</title>
+    <th:replace th:replace="~{fragment/meta :: meta}" />
+</head>
+<body class="d-flex flex-column vh-100">
+<th:block th:replace="~{fragment/modal :: modal}" />
+<th:block th:replace="~{fragment/navbar :: navbar}" />
+<div class="container mt-4 flex-grow-1">
+
+    <header>
+        <h1>Ayuda</h1>
+    </header>
+
+    <main>
+        <div>
+            <h2>Resumen de la Aplicación</h2>
+
+            <p>Esta sección describe cómo funciona la aplicación, cómo se utiliza y sus principales características.</p>
+
+            <p>La aplicación web proporciona una plataforma compartida para gestionar y organizar recursos, valoraciones y listas, con diferentes niveles de acceso y control según el tipo de usuario.</p>
+
+            <h3>Tipos de Usuario</h3>
+            <ul>
+                <li>Usuario no registrado / no autenticado</li>
+                <li>Usuario autor autenticado</li>
+                <li>Usuario administrador autenticado</li>
+            </ul>
+
+            <h3>Funcionalidades Principales</h3>
+            <ul>
+                <li>Gestión de recursos, valoraciones y listas de recursos</li>
+                <li>Gestión de usuarios registrados</li>
+                <li>Compartir recursos entre usuarios</li>
+                <li>Creación y edición de contenido por usuarios autenticados</li>
+                <li>Administración de recursos y usuarios por el administrador</li>
+            </ul>
+
+            <h3>Características Específicas</h3>
+            <ul>
+                <li>Cada recurso puede tener valoraciones de distintos usuarios</li>
+                <li>Cada usuario tiene sus propias listas de recursos</li>
+                <li>Un recurso puede estar en varias o ninguna lista</li>
+                <li>Sólo los administradores pueden eliminar recursos permanentemente</li>
+                <li>Los administradores gestionan el alta y baja de usuarios</li>
+                <li>Los autores pueden modificar sus propios perfiles, pero no los de otros usuarios</li>
+                <li>Las eliminaciones de recursos o usuarios implican la eliminación de sus valoraciones asociadas</li>
+                <li>La eliminación de un usuario elimina sus listas, pero los recursos creados permanecen disponibles</li>
+            </ul>
+
+            <h2>Usando la aplicación web</h2>
+
+            <p>Para acceder a la aplicación, debe iniciar sesión con un usuario registrado o autenticado. Si no tiene ninguna cuenta, puede crear una cuenta en la aplicación. Una vez creada, el usuario puede acceder a la aplicación.
+
+            <h2>Usuario no autenticado</h2>
+            <p>Este usuario puede:</p>
+            <ul>
+                <li>Ver el listado de recursos completo, pero sin valoraciones asociadas.</li>
+                <li>Ver el detalle de cada uno de esos recursos, también sin valoraciones ni las listas de las que forma parte.</li>
+                <li>Hacer clic en los enlaces a los recursos.</li>
+            </ul>
+
+            <p>Opción de menú login: Hacer Login.</p>
+
+            <h2>Usuario autenticado</h2>
+            <p>Además de las funcionalidades del usuario anterior, este usuario puede:</p>
+            <ul>
+                <li>Crear nuevos recursos.</li>
+                <li>Editar recursos existentes.</li>
+                <li>Ver detalles de un recurso, que incluyen las valoraciones que ha recibido ese recurso y enlaces a las listas propias en las que el recurso está incluido. Si el recurso no está incluido en alguna de las listas del usuario, no se mostrarán estos enlaces.</li>
+                <li>Editar y/o eliminar las valoraciones.</li>
+            </ul>
+
+            <h3>Opción de menú "Listas":</h3>
+            <ul>
+                <li>Creación de nuevas listas: Permite organizar recursos por categorías personalizadas.</li>
+                <li>Eliminación de todas las listas: Opción para resetear completamente el sistema de listas.</li>
+                <li>Edición individual de listas: Modificar detalles específicos de una lista existente.</li>
+                <li>Eliminación de una lista: Eliminar una lista completa con todos sus recursos.</li>
+                <li>Detalles de listas (relación de recursos): Ver qué recursos están incluidos en cada lista.</li>
+                <li>Añadir y quitar recursos a listas: Organizar y reorganizar los recursos dentro de las listas.</li>
+                <li>Añadir un nuevo recurso a esta lista compartida: Hacer que un recurso sea accesible para otros usuarios.</li>
+                <li>Quitar un recurso de la lista: Eliminar el recurso de una lista sin eliminarlo del sistema.</li>
+                <li>Quitar todos los recursos de la lista: Eliminar todos los recursos de una lista en una sola operación.</li>
+            </ul>
+
+            <h3>Opción de menú "Perfil":</h3>
+            <ul>
+                <li>Ver detalles del perfil: Acceder a información personal del usuario.</li>
+                <li>Editar datos del perfil: Modificar información personal.</li>
+                <li>Logout: Cerrar sesión y desconectar al usuario del sistema.</li>
+            </ul>
+
+            <h2>Usuario administrador autenticado</h2>
+            <p>Además de las funcionalidades del usuario autenticado, este usuario puede:</p>
+            <ul>
+                <li>Eliminar recursos: Permite al administrador borrar contenido específico del sistema.</li>
+                <li>Edición de valoraciones de recursos: Modificar o actualizar las opiniones de otros usuarios sobre los recursos.</li>
+                <li>Eliminación de valoraciones de recursos: Remover completamente las valoraciones de un recurso.</li>
+            </ul>
+
+            <h3>Opción de menú "Usuarios":</h3>
+            <ul>
+                <li>Creación de nuevos usuarios: Añadir cuentas de nuevo usuarios al sistema.</li>
+                <li>Lista de usuarios: Ver una visión general de todas las cuentas existentes.</li>
+                <li>Detalle de usuario: Acceder a información completa de una cuenta específica.</li>
+                <li>Edición del perfil de los usuarios: Modificar datos personales y roles de otros usuarios.</li>
+                <li>Cambio de contraseña de los usuarios: Actualizar la seguridad de las cuentas existentes.</li>
+                <li>Cambio de rol de usuario: Reasignar roles como administrador o usuario normal.</li>
+                <li>Eliminación de un usuario: Borrar completamente una cuenta del sistema.</li>
+            </ul>
+
+            <h3>Opción de menú "Perfil":</h3>
+            <ul>
+                <li>Ver detalles del perfil: Acceder a información personal del administrador.</li>
+                <li>Logout: Desconectar al administrador del sistema.</li>
+            </ul>
+
+        </div>
+
+        <button class="btn btn-primary" onclick="history.back()">
+            <i class="fa-solid fa-rotate-left"></i>&nbsp;&nbsp;Volver
+        </button>
+    </main>
+
+</div>
+<th:block th:replace="~{fragment/footer :: footer}"></th:block>
+</body>
+</html>

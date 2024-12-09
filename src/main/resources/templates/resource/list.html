@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Recursos</title>
+    <th:replace th:replace="~{fragment/meta :: meta}" />
+</head>
+<body class="d-flex flex-column vh-100">
+    <th:block th:replace="~{fragment/spinner :: spinner}" />
+    <th:block th:replace="~{fragment/modal :: modal}" />
+    <th:block th:replace="~{fragment/navbar :: navbar}" />
+    <div class="container mt-4 flex-grow-1">
+
+        <header>
+            <h1>Recursos</h1>
+        </header>
+
+        <nav id="actions" sec:authorize="isAuthenticated()">
+            <button id="btnCreateResource" class="btn btn-primary btn-sm shadow-sm"
+                    onclick="location.href='/resources/create'">
+                <i class="fa-solid fa-circle-plus"></i>&nbsp;&nbsp;Crear un recurso nuevo
+            </button>
+        </nav>
+
+        <main>
+            <p th:if="${resources == null || resources.size() == 0}" class="mt-3">No existen recursos</p>
+            <div class="table-responsive">
+            <table th:unless="${resources == null || resources.size() == 0}" id="resourcesList"
+                   class="table table-striped border shadow-sm">
+                <thead>
+                <tr>
+                    <th scope="col" class="visually-hidden avatar-col-size">Avatar</th>
+                    <th scope="col">Recurso</th>
+                    <th scope="col">Tipo</th>
+                    <th scope="col">Descripción</th>
+                    <th scope="col" class="visually-hidden">Acciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="resource : ${resources}">
+                    <td class="avatar-col-size">
+                        <img th:src="${resource.getImageUrl() != '' ? resource.getImageUrl() : '/img/noImage.jpg'}"
+                             class="avatar ms-1" th:alt="${resource.getTitle()}">
+                    </td>
+                    <td>
+                        <a th:href="${resource.url}" target="_blank" th:text="${resource.title}"></a>
+                    </td>
+                    <td th:text="${resource.type}"></td>
+                    <td th:utext="${resource.description}"></td>
+                    <td class="action-col-size">
+                        <div class="float-end">
+                            <a th:href="'/resources/' + ${resource.id}" title="Ver el recurso"
+                               class="btn btn-sm btn-info btn-mini-size me-1"><i class="fa-solid fa-eye"></i><span class="visually-hidden">Ver</span></a>
+                            <a sec:authorize="isAuthenticated()" th:href="'/resources/update/' + ${resource.id}" title="Editar el recurso"
+                               class="btn btn-sm btn-warning btn-mini-size me-1"><i class="fa-solid fa-pen-to-square"></i><span class="visually-hidden">Editar</span></a>
+                            <button sec:authorize="isAuthenticated()" th:if="${#authentication.principal.role.isAdmin()}"
+                                    type="button" class="btn btn-sm btn-danger btn-mini-size me-1" title="Eliminar el recurso"
+                                    data-bs-toggle="modal" data-bs-target="#confirm"
+                                    th:data-bs-url="'/resources/delete/' + ${resource.id}"
+                                    th:data-bs-text="'¿Deseas eliminar el recurso «' + ${resource.title} + '»?<br/><br/><strong>ADVERTENCIA</strong>:<br/>Al eliminar el recurso, se eliminarán los comentarios y dejará de estar en las listas asociadas.'">
+                                <i class="fa-solid fa-trash-can"></i><span class="visually-hidden">Eliminar</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            </div>
+
+            <p th:if="${resources != null && resources.size() > 0}"
+               th:text="'Total de recursos: ' + ${resources.size()}"></p>
+        </main>
+
+    </div>
+    <footer th:replace="~{fragment/footer :: footer}"></footer>
+</body>
+</html>

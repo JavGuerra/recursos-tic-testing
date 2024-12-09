@@ -1,0 +1,128 @@
+body {
+    background: url("/img/bg.webp") center/cover no-repeat fixed;
+}
+
+.accent, h1, h2, h3, legend, label, th {
+    color: purple !important;
+}
+
+.inverse-accent {
+    color: salmon !important;
+}
+
+.bg-custom-purple {
+  background-color: Purple;
+}
+
+.avatarNav {
+    width: 24px;
+    height: 24px;
+}
+
+.avatar {
+    width: 32px;
+    height: 32px;
+}
+
+.list-col-size {
+    width: 32px;
+}
+
+.avatar-col-size {
+    width: 36px;
+}
+.action-col-size {
+    width: 140px;
+}
+
+.btn {
+    margin-top: 0.32em;
+    margin-bottom: 0.32em;
+}
+
+.btn-mini-size {
+    width: 32px;
+}
+
+.btn-primary, .btn-primary:hover, .btn-primary:focus,
+.btn-info, .btn-info:hover, .btn-info:focus {
+    background-color: lightSkyBlue;
+    border-color: lightSkyBlue;
+    color: black;
+}
+
+.btn-secondary, .btn-secondary:hover, .btn-secondary:focus,
+.btn-warning, .btn-warning:hover {
+  background-color: salmon;
+  border-color: salmon;
+  color: white;
+}
+
+.btn-danger, .btn-danger:hover {
+  background-color: purple;
+  border-color: purple;
+  color: white;
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 700px;
+  }
+}
+
+@media (min-width: 992px) {
+  .container {
+    max-width: 900px;
+  }
+}
+
+/* Form */
+
+.form-label.required::after {
+  content: "*";
+  color: salmon;
+  font-size: 12px;
+  margin-left: 5px;
+}
+
+.form-control, .form-select {
+    margin-bottom: 1em;
+}
+
+/* Table */
+
+.table, .table.table-striped {
+    border-left-color: Salmon !important;
+    border-left-width: 6px !important;
+}
+
+#actions, table {
+    margin-top: 1em;
+}
+
+/* Spinner loader */
+
+#zone {
+  border: none;
+  background: none;
+}
+
+#zone:focus {
+  outline: none;
+}
+
+.spinner {
+  margin: 0 auto;
+  border: 5px solid lightSkyBlue;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border-left-color: purple;
+
+  animation: spin 1s ease infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

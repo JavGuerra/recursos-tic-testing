@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Formulario del usuario</title>
+    <th:replace th:replace="~{fragment/meta :: meta}"/>
+</head>
+<body class="d-flex flex-column vh-100">
+<th:block th:replace="~{fragment/navbar :: navbar}"/>
+<div class="container mt-4 flex-grow-1">
+
+    <header>
+        <h1 th:if="${user.id}">Editar usuario <span th:text="${user.username}"></span></h1>
+        <h1 th:unless="${user.id}">Crear un nuevo usuario</h1>
+        <div th:if="${error}" class="alert alert-danger mt-3" role="alert">
+            <span th:text="${error}"></span>
+        </div>
+    </header>
+
+    <main>
+        <form method="POST" th:object="${user}" th:action="@{/users}">
+            <fieldset>
+                <legend>Datos del usuario</legend>
+                <input type="hidden" id="id" th:field="*{id}"/>
+                <div>
+                    <label for="name" class="form-label required">Nombre y apellidos</label>
+                    <input type="text" class="form-control" id="name" th:field="*{name}" required />
+                </div>
+                <div>
+                    <label for="imageUrl" class="form-label">Enlace a foto</label>
+                    <input type="text" class="form-control" id="imageUrl" th:field="*{imageUrl}" />
+                </div>
+                <div>
+                    <label for="email" class="form-label required">Correo Electrónico</label>
+                    <input type="email" class="form-control" id="email" th:field="*{email}" required />
+                </div>
+                <div>
+                    <label for="username" class="form-label required">Usuario de la aplicación</label>
+                    <input type="text" class="form-control" id="username" th:field="*{username}" required />
+                </div>
+                <div>
+                    <label th:if="${user.id}" for="password" class="form-label">Cambiar contraseña (no obligatorio)</label>
+                    <label th:unless="${user.id}" for="password" class="form-label">Contraseña</label>
+                    <input type="password" class="form-control" id="password" th:field="*{password}"/>
+                </div>
+
+                <div sec:authorize="isAuthenticated()" th:if="${#authentication.principal.role.isAdmin()}">
+                    <label for="role" class="form-label">Rol: </label>
+                    <select name="role" id="role" class="form-select" th:field="*{role}">
+                        <option th:each="roleOpt : ${T(com.grupo1.recursos_tic.model.UserRole).values()}"
+                                th:value="${roleOpt.name()}" th:text="${roleOpt.userRole}"></option>
+                    </select>
+                </div>
+                <input sec:authorize="isAuthenticated()" th:unless="${#authentication.principal.role.isAdmin()}" type="hidden" th:field="*{role}" />
+
+            </fieldset>
+            <div>
+                <button type="button" class="btn btn-secondary me-2" onclick="history.back()">
+                    <i class="fa-solid fa-xmark"></i>&nbsp;&nbsp;Cancelar</button>
+                <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i>&nbsp;&nbsp;Guardar</button>
+            </div>
+        </form>
+
+    </main>
+
+    </div>
+    <footer th:replace="~{fragment/footer :: footer}"></footer>
+</body>
+</html>

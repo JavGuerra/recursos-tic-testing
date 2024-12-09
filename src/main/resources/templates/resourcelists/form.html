@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Formulario de la lista</title>
+    <th:replace th:replace="~{fragment/meta :: meta}" />
+
+    <script src="/js/tinymce/tinymce.min.js"></script>
+    <script src="/js/tinymce/langs/es.js"></script>
+    <script>
+        tinymce.init({
+            selector: 'textarea#description',
+            language: 'es',
+            plugins: 'advlist autolink lists link image charmap print preview hr anchor pagebreak',
+            toolbar_mode: 'floating',
+            height: 200
+        });
+    </script>
+
+</head>
+<body class="d-flex flex-column vh-100">
+    <th:block th:replace="~{fragment/navbar :: navbar}" />
+    <div class="container mt-4 flex-grow-1">
+
+        <header>
+            <h1 th:if="${resourcelist.id}">Editar lista <span th:text="${resourcelist.name}"></span></h1>
+            <h1 th:unless="${resourcelist.id}">Crear una nueva lista</h1>
+        </header>
+
+        <main>
+            <p th:if="${resourcelist == null}">La lista no existe</p>
+            <form th:if="${resourcelist}"  id="resourcelistForm" th:action="@{/resourcelists}" th:object="${resourcelist}" method="post">
+                <fieldset>
+                    <legend>Datos de la lista</legend>
+                    <input type="hidden" id="id" th:field="*{id}" />
+                    <input type="hidden" id="owner" th:field="*{owner}" />
+                    <input type="hidden" id="resources" th:field="*{resources}" />
+
+                    <div>
+                        <label for="name" class="form-label required">Nombre</label>
+                        <input type="text" class="form-control" id="name" th:field="*{name}" required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Descripción</label>
+                        <textarea rows="5" class="form-control" id="description" th:field="*{description}"
+                                  placeholder="Incluye una descripción" ></textarea>
+                    </div>
+                </fieldset>
+                <div>
+                    <button type="button" class="btn btn-secondary me-2" onclick="history.back()">
+                        <i class="fa-solid fa-xmark"></i>&nbsp;&nbsp;Cancelar</button>
+                    <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i>&nbsp;&nbsp;Guardar</button>
+                </div>
+            </form>
+        </main>
+
+    </div>
+    <footer th:replace="~{fragment/footer :: footer}"></footer>
+</body>
+</html>

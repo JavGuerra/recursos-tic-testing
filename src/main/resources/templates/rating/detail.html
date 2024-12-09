@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Detalle de la valoración</title>
+    <th:replace th:replace="~{fragment/meta :: meta}"/>
+</head>
+<body class="d-flex flex-column vh-100">
+<th:block th:replace="~{fragment/navbar :: navbar}"/>
+    <div class="container mt-4 flex-grow-1">
+
+        <header>
+            <h1>Detalle de la valoración</h1>
+        </header>
+
+        <nav id="actions" th:if="${#authentication.principal.role.isAdmin()}">
+            <button class="btn btn-primary btn-sm" onclick="location.href='/ratings'">
+                <i class="fa-solid fa-list-ul"></i>&nbsp;&nbsp;Ver la lista de valoraciones
+            </button>
+        </nav>
+
+        <main>
+            <p th:if="${rating == null}">La valoración no existe</p>
+            <table th:if="${rating}" id="ratingDetail" class="table border shadow-sm">
+                <thead>
+                    <tr>
+                        <th>Usuario</th>
+                        <th>Recurso</th>
+                        <th>Título</th>
+                        <th>Comentario</th>
+                        <th>Puntuación</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td th:text="${rating.user.name}"></td>
+                        <td th:text="${rating.resource.title}"></td>
+                        <td th:text="${rating.title}"></td>
+                        <td th:text="${rating.comment}"></td>
+                        <td th:text="${rating.score + ' ' + '⭐' * rating.score.intValue()}">
+                        <td class="action-col-size align-middle">
+                            <div class="float-end">
+                                <a th:href="'/ratings/update/' + ${rating.id}" class="btn btn-sm btn-warning me-1">
+                                    <i class="fa-solid fa-pen-to-square"></i></a>
+                                <a th:href="'/ratings/delete/' + ${rating.id}" class="btn btn-sm btn-danger">
+                                    <i class="fa-solid fa-trash-can"></i></a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </main>
+
+    </div>
+    <footer th:replace="~{fragment/footer :: footer}"></footer>
+</body>
+</html>

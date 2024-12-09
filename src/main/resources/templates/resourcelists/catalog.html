@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Catálogo de recursos</title>
+    <th:replace th:replace="~{fragment/meta :: meta}" />
+</head>
+<body class="d-flex flex-column vh-100">
+    <th:block th:replace="~{fragment/navbar :: navbar}" />
+    <div class="container mt-4 flex-grow-1">
+
+        <header>
+            <h1>Recursos de la lista <span th:text="${listId}"></span></h1>
+        </header>
+
+        <main>
+            <p th:if="${allResources == null || allResources.size() == 0}">La lista no tiene recursos</p>
+            <form
+                    th:unless="${allResources == null || allResources.size() == 0}"
+                  id="resourceListForm"
+                    th:action="@{/resourcelists/add}"
+                    method="post"
+                    th:object="${resourceListObject}"
+            >
+                <fieldset>
+                    <legend>Catálogo de recursos</legend>
+                    <div class="form-group">
+                        <input type="hidden" name="listId" th:value="${listId}"/>
+
+                        <input type="hidden" id="id" th:field="*{id}" />
+                        <input type="hidden" id="owner" th:field="*{owner}" />
+                        <input type="hidden" id="name" th:field="*{name}" />
+                        <input type="hidden" id="description" th:field="*{description}" />
+
+                        <div>
+                            <label for="catalog" class="form-label required">Recursos</label>
+                            <select th:field="*{resources}" name="catalog" id="catalog" class="form-select" multiple>
+                                <option th:each="resource : ${allResources}"
+                                        th:value="${resource.id}" th:text="${resource.title}"
+                                        th:selected="${resources.contains(resource)}"></option>
+                            </select>
+                        </div>
+                    </div>
+                </fieldset>
+                <div>
+                    <a th:href="'/resourcelists/' + ${listId}" class="btn btn-secondary me-2">
+                        <i class="fa-solid fa-xmark"></i>&nbsp;&nbsp;Cancelar</a>
+                    <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i>&nbsp;&nbsp;Actualizar</button>
+                </div>
+            </form>
+
+            <button th:if="${allResources == null || allResources.size() == 0}"
+                    class="btn btn-primary" onclick="history.back()">
+                <i class="fa-solid fa-rotate-left"></i>&nbsp;&nbsp;Volver
+            </button>
+
+        </main>
+
+    </div>
+    <footer th:replace="~{fragment/footer :: footer}"></footer>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<div th:fragment="modal" sec:authorize="isAuthenticated()">
+
+  <div id="confirm" class="modal fade" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="modalLabel">Confirmar</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <p id="message" class="text-center">&nbsp;</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" id="sendBtn" class="btn btn-primary">Aceptar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const confirm = document.getElementById('confirm')
+    const sendBtn = document.getElementById('sendBtn')
+    const msgTxt = document.getElementById('message')
+
+    confirm.addEventListener('shown.bs.modal', event => {
+      // Foco en Aceptar
+      sendBtn.focus()
+
+      // Rellenar modal
+      const button = event.relatedTarget
+      msgTxt.innerHTML = button.getAttribute('data-bs-text')
+      const url = button.getAttribute('data-bs-url');
+      sendBtn.addEventListener('click', () => window.location.href = url);
+    })
+  </script>
+
+</div>
+

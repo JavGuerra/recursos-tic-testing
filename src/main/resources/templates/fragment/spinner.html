@@ -1,0 +1,24 @@
+<div th:fragment="spinner">
+    <dialog id="zone">
+        <div class="spinner" aria-label="Cargando..."></div>
+    </dialog>
+
+    <script>
+        const zone = document.querySelector('#zone');
+
+        // Activa la ventana modal
+        let domContentLoadedCallback = function() {
+            zone.showModal();
+            document.removeEventListener('DOMContentLoaded', domContentLoadedCallback);
+        };
+
+        // Desactiva la ventana modal
+        let loadCallback = function() {
+            zone.close();
+            window.removeEventListener('load', loadCallback);
+        };
+
+        document.addEventListener('DOMContentLoaded', domContentLoadedCallback);
+        window.addEventListener('load', loadCallback);
+    </script>
+</div>

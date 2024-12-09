@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Proyecto</title>
+    <th:replace th:replace="~{fragment/meta :: meta}" />
+</head>
+<body class="d-flex flex-column vh-100">
+<th:block th:replace="~{fragment/modal :: modal}" />
+<th:block th:replace="~{fragment/navbar :: navbar}" />
+<div class="container mt-4 flex-grow-1">
+
+    <header>
+        <h1>Proyecto</h1>
+    </header>
+
+    <main>
+        <section>
+            <h2>Presentación</h2>
+            <p>En este proyecto se ha desarrollado una aplicación que permita gestionar recursos TIC y listas de recursos, para realizar los tests correspondientes, aplicando los conocimientos aprendidos.</p>
+            <p>El objetivo es dotar de una herramienta para que una comunidad de usuarios pueda compartir recursos TIC, con sus valoraciones y categorizaciones.</p>
+        </section>
+
+        <nav>
+            <ul class="nav nav-pills flex-column flex-sm-row my-3">
+                <li class="nav-item">
+                    <button class="btn btn-primary me-3" onclick="location.href='/swagger-ui/index.html'"><i class="fa-solid fa-database"></i>&nbsp;&nbsp;Acceder a la API</button>
+                </li>
+                <li class="nav-item">
+                    <button class="btn btn-primary me-3" onclick="location.href='https://github.com/kevinzamoraa/recursos_tic-grupo1-java_testing-24'">
+                        <i class="fa-brands fa-github"></i>&nbsp;&nbsp;Visitar el repositorio</button>
+                </li>
+                <button class="btn btn-primary me-3" onclick="window.open('/doc/presentacion-recursos_tic.pdf')"><i class="fa-solid fa-file-pdf"></i>&nbsp;&nbsp;Abrir presentación PDF</button>
+            </ul>
+        </nav>
+
+        <hr />
+
+        <section>
+            <h2>Autores</h2>
+            <p>Javier García, Kevin Zamora, Marina García</p>
+
+            <h2>Profesor</h2>
+            <p>Alan Sastre</p>
+
+            <h2>Mentores</h2>
+            <p>Marina Sayols, David Gómez</p>
+        </section>
+
+        <section>
+            <h2>MVP</h2>
+            <p>Se ha desarrollado la aplicación con el objetivo de cumplir con los siguientes requisitos mínimos:</p>
+            <ul>
+                <li>Planificación del proyecto y coordinación</li>
+                <li>Aplicación web con Java</li>
+                <li>Creación, lectura, modificación y borrado de Recursos TIC, Listas, Valoraciones y Usuarios</li>
+                <li>Gestión de BBDD</li>
+                <li>Interfaz con plantillas HTML y CSS</li>
+                <li>Gestión de errores y excepciones</li>
+                <li>Test unitarios, de integración y funcionales</li>
+                <li>Dockerización de la aplicación</li>
+                <li>Integración continua y automatización</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Destacados</h2>
+            <p>Además de los requisitos del MVP, se han incluido las siguientes funcionalidades:</p>
+            <ul>
+                <li>Diseño responsive, "mobile first"</li>
+                <li>Web accesible AA. Testada con WAVE</li>
+                <li>Seguridad por diseño</li>
+                <li>Confirmaciones de borrado</li>
+                <li>Implementación de login de usuarios</li>
+                <li>Integra el editor TinyMCE</li>
+                <li>Provee API REST e interfaz Swagger</li>
+                <li>Incluye aviso legal, privacidad y cookies</li>
+                <li>Documentación la aplicación con JavaDoc</li>
+                <li>Usa el protocolo OpenGraph para RR.SS.</li>
+                <li>Manifest para móviles (PWA)</li>
+                <li>Desarrollada con Linux + Docker LAMP</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Tecnologías</h2>
+            <p>Para el desarrollo se ha utilizado:</p>
+            <ul>
+                <li>Java 23</li>
+                <li>Spring Boot</li>
+                <li>Spring Security</li>
+                <li>Thymeleaf</li>
+                <li>Bootstrap</li>
+                <li>TinyMCE</li>
+                <li>MySQL</li>
+                <li>H2</li>
+                <li>Hibernate</li>
+                <li>Docker</li>
+                <li>Docker-compose</li>
+                <li>GitHub Actions</li>
+            </ul>
+            <p>Para el testing se ha utilizado:</p>
+            <ul>
+                <li>JUnit</li>
+                <li>Mockito</li>
+                <li>Selenium</li>
+                <li>JaCoCo</li>
+                <li>SonarQube</li>
+                <li>Swagger</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Alcance del proyecto</h2>
+
+            Elaborado con la ayuda de los mentores.
+
+            <h3>Epics</h3>
+
+            <ol>
+                <li>Gestión de Recursos TIC
+                    <ul>
+                        <li>Permitir a los usuarios crear, editar, eliminar y visualizar enlaces a recursos TIC.</li>
+                        <li>Implementar la funcionalidad para agrupar recursos en listas.</li>
+                    </ul>
+                </li>
+                <li>Gestión de Usuarios
+                    <ul>
+                        <li>Facilitar el registro, autenticación y gestión de perfiles de usuarios.</li>
+                        <li>Permitir a los administradores gestionar usuarios (alta, baja y edición).</li>
+                    </ul>
+                </li>
+                <li>Valoraciones y Comentarios
+                    <ul>
+                        <li>Implementar un sistema de valoraciones para que los usuarios puedan calificar los recursos.</li>
+                        <li>Permitir a los usuarios dejar comentarios sobre los recursos.</li>
+                    </ul>
+                </li>
+                <li>Gestión de Listas de Recursos
+                    <ul>
+                        <li>Permitir a los usuarios crear y gestionar listas personalizadas de recursos.</li>
+                        <li>Implementar la funcionalidad para añadir o eliminar recursos de las listas.</li>
+                    </ul>
+                </li>
+                <li>Administración y Moderación
+                    <ul>
+                        <li>Proporcionar herramientas para que los administradores gestionen el contenido y los usuarios.</li>
+                        <li>Implementar un sistema de notificaciones para alertar sobre acciones importantes (como eliminaciones de recursos).</li>
+                    </ul>
+                </li>
+                <li>Interfaz de Usuario y Experiencia
+                    <ul>
+                        <li>Diseñar una interfaz intuitiva y accesible para todos los tipos de usuarios.</li>
+                        <li>Asegurar que la navegación y la interacción sean fluidas y agradables.</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <h3>Historias de usuario (tests de aceptación)</h3>
+
+            <h4>Usuario no registrado</h4>
+
+            <ol>
+                <li>Como usuario no registrado, quiero poder ver una lista de recursos TIC, para que pueda explorar el contenido disponible sin necesidad de registrarme.</li>
+                <li>Como usuario no registrado, quiero poder registrarme en la aplicación, para que pueda acceder a funcionalidades adicionales como crear listas y dejar valoraciones.</li>
+            </ol>
+
+            <h4>Usuario autor autenticado</h4>
+
+            <ol>
+                <li>Como usuario autor autenticado, quiero poder crear nuevos enlaces a recursos, para que pueda contribuir con contenido útil a la comunidad.</li>
+                <li>Como usuario autor autenticado, quiero poder editar mis propios enlaces a recursos (y losde otros), para que pueda corregir información o actualizar enlaces obsoletos.</li>
+                <li>Como usuario autor autenticado, quiero poder eliminar mis enlaces a recursos (y los de otros), para que pueda gestionar el contenido que he creado.</li>
+                <li>Como usuario autor autenticado, quiero poder crear y gestionar mis propias listas de recursos, para que pueda organizar el contenido de manera que me resulte útil.</li>
+                <li>Como usuario autor autenticado, quiero poder dejar valoraciones en los recursos, para que pueda compartir mi opinión y ayudar a otros usuarios a decidir sobre su utilidad.</li>
+            </ol>
+            <h4>Usuario administrador autenticado</h4>
+            <ol>
+                <li>Como administrador autenticado, quiero poder gestionar usuarios (dar de alta y baja), para que pueda mantener la integridad y seguridad de la comunidad.</li>
+                <li>Como administrador autenticado, quiero poder eliminar enlaces a recursos, para que pueda gestionar el contenido inapropiado o irrelevante.</li>
+                <li>Como administrador autenticado, quiero poder editar los datos de los usuarios, para que pueda corregir información errónea o actualizar datos.</li>
+                <li>Como administrador autenticado, quiero poder ver todas las valoraciones de los recursos, para que pueda supervisar la calidad del contenido y la interacción de los usuarios.</li>
+            </ol>
+
+            <h3>Consideraciones adicionales</h3>
+            <ol>
+                <li>Eliminación de recursos y valoraciones: Al eliminar un recurso, todas las valoraciones asociadas deben eliminarse. Esto debe ser claro para los usuarios.</li>
+                <li>Persistencia de recursos: Los recursos creados por un usuario deben permanecer en la aplicación incluso si el usuario es eliminado, asegurando que el contenido no se pierde.</li>
+            </ol>
+
+            <h2>Criterios de aceptación (tests de integración)</h2>
+
+            <h3>Usuario no registrado</h3>
+            <ol>
+                <li>Visualización de recursos
+                    <ul>
+                        <li>El usuario puede ver una lista de recursos TIC sin necesidad de registrarse.</li>
+                        <li>La lista muestra al menos el título y una breve descripción de cada recurso.</li>
+                    </ul>
+                </li>
+                <li>Registro de usuario
+                    <ul>
+                        <li>El usuario puede completar un formulario de registro y recibir una confirmación de éxito.</li>
+                        <li>Se valida que el correo electrónico no esté ya registrado.</li>
+                    </ul>
+                </li>
+            </ol>
+            <h3>Usuario autor autenticado</h3>
+            <ol>
+                <li>Creación de recursos
+                    <ul>
+                        <li>El usuario puede crear un nuevo enlace a un recurso y recibir una confirmación de éxito.</li>
+                        <li>El recurso creado aparece en la lista de recursos disponibles.</li>
+                    </ul>
+                </li>
+                <li>Edición de recursos
+                    <ul>
+                        <li>El usuario puede editar un recurso existente y ver los cambios reflejados inmediatamente.</li>
+                        <li>Determinar si se valida que el usuario solo pueda editar sus propios recursos.</li>
+                    </ul>
+                </li>
+                <li>Determinar si el usuario puede proceder a la eliminación de recursos, y entonces
+                    <ul>
+                        <li>El usuario puede eliminar un recurso y recibir una confirmación de éxito.</li>
+                        <li>El recurso eliminado ya no aparece en la lista de recursos.</li>
+                    </ul>
+                </li>
+                <li>Gestión de listas
+                    <ul>
+                        <li>El usuario puede crear, editar y eliminar listas de recursos.</li>
+                        <li>Las listas creadas son visibles y accesibles para el usuario.</li>
+                    </ul>
+                </li>
+                <li>Valoraciones de recursos
+                    <ul>
+                        <li>El usuario puede dejar una valoración en un recurso y ver su valoración reflejada.</li>
+                        <li>El sistema permite solo una valoración por recurso por usuario.</li>
+                    </ul>
+                </li>
+            </ol>
+            <h3>Usuario administrador autenticado</h3>
+            <ol>
+                <li>Gestión de usuarios
+                    <ul>
+                        <li>El administrador puede dar de alta y baja a usuarios y recibir confirmaciones de éxito.</li>
+                        <li>Los cambios en el estado de los usuarios se reflejan en la lista de usuarios.</li>
+                    </ul>
+                </li>
+                <li>Eliminación de recursos
+                    <ul>
+                        <li>El administrador puede eliminar un recurso y recibir una confirmación de éxito.</li>
+                        <li>Al eliminar un recurso, se eliminan todas las valoraciones asociadas.</li>
+                    </ul>
+                </li>
+                <li>Edición de datos de usuario
+                    <ul>
+                        <li>El administrador puede editar los datos de cualquier usuario y ver los cambios reflejados.</li>
+                        <li>Se valida que los cambios sean efectivos y se notifique al usuario afectado.</li>
+                    </ul>
+                </li>
+            </ol>
+            <h3>Consideraciones generales</h3>
+            <ol>
+                <li>Todos los mensajes de error deben ser claros y útiles para el usuario.</li>
+                <li>Las acciones deben ser reversibles donde sea posible (por ejemplo, confirmaciones antes de eliminar).</li>
+                <li>Explorar la agrupación en flujos (Happy Path, Edge Cases)
+                    <ul>
+                        <li>Happy Path: Flujos de usuarios que realizan acciones normales y esperan que se realicen correctamente.</li>
+                        <li>Edge Cases: Flujos de usuarios que realizan acciones normales pero que no esperan que se realicen correctamente.</li>
+                    </ul>
+                </li>
+            </ol>
+        </section>
+
+        <section>
+            <h2>Opciones de mejora</h2>
+            <ul>
+                <li>Validación de formularios</li>
+                <li>Logs de accesos</li>
+                <li>Mensajes de confirmación de alta, actualización y borrado</li>
+                <li>Paginación de resultados</li>
+                <li>CRUD de etiquetas</li>
+                <li>CRUD de tipo de recurso</li>
+                <li>Test de regresión</li>
+                <li>Filtrado y ordenado de listas</li>
+                <li>Buscador de recursos reactivo</li>
+                <li>Notificar al usuario cuando este ha sido dado de baja</li>
+                <li>Estadísticas</li>
+                <li>Traducción a otros idiomas</li>
+            </ul>
+
+        </section>
+
+        <section>
+            <h2>Licencia</h2>
+            <p>Este proyecto está licenciado bajo la licencia GPL v3.0.</p>
+        </section>
+
+        <button class="btn btn-primary" onclick="history.back()">
+            <i class="fa-solid fa-rotate-left"></i>&nbsp;&nbsp;Volver
+        </button>
+    </main>
+
+</div>
+<th:block th:replace="~{fragment/footer :: footer}"></th:block>
+</body>
+</html>

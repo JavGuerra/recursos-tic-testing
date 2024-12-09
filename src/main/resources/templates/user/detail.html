@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Detalle del usuario</title>
+    <th:replace th:replace="~{fragment/meta :: meta}"/>
+</head>
+<body class="d-flex flex-column vh-100">
+<th:block th:replace="~{fragment/modal :: modal}" />
+<th:block th:replace="~{fragment/navbar :: navbar}"/>
+<div class="container mt-4 flex-grow-1">
+
+    <header>
+        <h1 th:if="${user}" th:text="|Usuario ${user.username}|"></h1>
+        <h1 th:unless="${user}">Detalle del usuario</h1>
+    </header>
+
+    <nav id="actions" th:if="${#authentication.principal.role.isAdmin()}">
+        <button class="btn btn-primary shadow-sm btn-sm" onclick="location.href='/users'">
+            <i class="fa-solid fa-list-ul"></i>&nbsp;&nbsp;Ver la lista de usuarios
+        </button>
+    </nav>
+
+    <main>
+        <p th:if="${user == null}">El usuario no existe</p>
+        <div class="table-responsive">
+        <table th:if="${user}" id="userDetail" class="table border shadow-sm">
+            <thead>
+                <tr>
+                    <th scope="col" class="list-col-size visually-hidden">Avatar</th>
+                    <th scope="col">Usuario</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Correo</th>
+                    <th scope="col">Rol</th>
+                    <th scope="col" class="visually-hidden">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="align-middle avatar-col-size">
+                        <img th:src="${user.getImageUrl() != '' ? user.getImageUrl() : '/img/user/noUser.png'}"
+                             class="avatar rounded-circle me-2" th:alt="${user.getUsername()}">
+                        <span ></span>
+                    </td>
+                    <td th:text="${user.username}" class="fw-bold align-middle"></td>
+                    <td th:text="${user.name}" class="align-middle"></td>
+                    <td th:text="${user.email}" class="align-middle"></td>
+                    <td th:text="${user.role}" class="align-middle"></td>
+                    <td class="action-col-size align-middle">
+                        <div class="float-end">
+                            <a th:href="'/users/update/' + ${user.id}" title="Editar el usuario"
+                               class="btn btn-sm btn-warning btn-mini-size me-1">
+                                <i class="fa-solid fa-pen-to-square"></i><span class="visually-hidden">Editar</span></a>
+                            <button th:if="${user.id != #authentication.principal.id and #authentication.principal.role.isAdmin()}"
+                                    type="button" class="btn btn-sm btn-danger btn-mini-size me-1" title="Eliminar el usuario"
+                                    data-bs-toggle="modal" data-bs-target="#confirm"
+                                    th:data-bs-url="'/users/delete/' + ${user.id}"
+                                    th:data-bs-text="'¿Deseas eliminar al usuario «' + ${user.username} + '»?'">
+                                <i class="fa-solid fa-trash-can"></i><span class="visually-hidden">Eliminar</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        </div>
+
+    </main>
+
+    </div>
+    <footer th:replace="~{fragment/footer :: footer}"></footer>
+</body>
+</html>

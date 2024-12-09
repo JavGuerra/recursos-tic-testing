@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Error</title>
+    <th:replace th:replace="~{fragment/meta :: meta}" />
+</head>
+<body class="d-flex flex-column vh-100">
+    <th:block th:replace="~{fragment/navbar :: navbar}" />
+    <div class="container mt-4 flex-grow-1">
+
+        <header>
+            <h1>Error</h1>
+        </header>
+
+        <main>
+            <p>
+                <code th:text="${message != 'None' ? message : 'No se encontraron errores.'}"></code>
+            </p>
+
+            <button class="btn btn-primary" onclick="history.back()">
+                <i class="fa-solid fa-rotate-left"></i>&nbsp;&nbsp;Volver
+            </button>
+        </main>
+
+    </div>
+    <footer th:replace="~{fragment/footer :: footer}"></footer>
+</body>
+</html>

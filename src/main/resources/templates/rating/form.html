@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <title>Formulario de la valoración</title>
+    <th:replace th:replace="~{fragment/meta :: meta}"/>
+
+    <script src="/js/tinymce/tinymce.min.js"></script>
+    <script src="/js/tinymce/langs/es.js"></script>
+    <script>
+        tinymce.init({
+            selector: 'textarea#comment',
+            language: 'es',
+            plugins: 'advlist autolink lists link image charmap print preview hr anchor pagebreak',
+            toolbar_mode: 'floating',
+            height: 200
+        });
+    </script>
+
+</head>
+<body class="d-flex flex-column vh-100">
+    <th:block th:replace="~{fragment/navbar :: navbar}"/>
+    <div class="container mt-4 flex-grow-1">
+
+        <header>
+            <h1 th:if="${rating.id}">Editar valoración</span></h1>
+            <h1 th:unless="${rating.id}">Crear valoración</h1>
+        </header>
+
+        <main>
+            <p th:if="${rating == null}">El valoración no existe</p>
+            <form method="POST" th:object="${rating}" th:action="@{/ratings}">
+                <p th:if="${rating == null}">La valoración no existe</p>
+                <fieldset>
+                    <legend>Datos de la valoración</legend>
+
+                    <input type="hidden" id="id" th:field="*{id}" />
+                    <input type="hidden" id="user" th:field="*{user}" />
+                    <input type="hidden" id="resource" th:field="*{resource}" />
+                    <input type="hidden" id="createdAt" th:field="*{createdAt}" />
+
+                    <div>
+                        <label for="title" class="form-label required">Título</label>
+                        <input type="text" class="form-control" id="title" th:field="*{title}" required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="comment" class="form-label">Comentario</label>
+                        <textarea rows="5" class="form-control" id="comment" th:field="*{comment}"
+                                  placeholder="Incluye un comentario" ></textarea>
+                    </div>
+
+                    <div>
+                        <label for="score" class="form-label">Puntuación</label>
+                        <input type="range" class="form-range" min="0" max="5" step="1" id="score" th:field="*{score}" />
+                    </div>
+
+                </fieldset>
+                <div>
+                    <button type="button" class="btn btn-secondary me-2" onclick="history.back()">
+                        <i class="fa-solid fa-xmark"></i>&nbsp;&nbsp;Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i>&nbsp;&nbsp;Guardar
+                    </button>
+                </div>
+            </form>
+        </main>
+
+    </div>
+    <footer th:replace="~{fragment/footer :: footer}"></footer>
+</body>
+</html>

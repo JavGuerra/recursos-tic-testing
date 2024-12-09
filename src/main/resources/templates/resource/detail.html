@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Detalle del recurso</title>
+    <th:replace th:replace="~{fragment/meta :: meta}" />
+</head>
+<body class="d-flex flex-column vh-100">
+    <th:block th:replace="~{fragment/spinner :: spinner}" />
+    <th:block th:replace="~{fragment/modal :: modal}" />
+    <th:block th:replace="~{fragment/navbar :: navbar}" />
+    <div class="container mt-4 flex-grow-1">
+
+        <header>
+            <h1 th:if="${resource}" th:text="${resource.title}"></h1>
+            <h1 th:unless="${resource}">Detalle del recurso</h1>
+        </header>
+
+        <nav id="actions">
+            <button class="btn btn-primary btn-sm shadow-sm" onclick="location.href='/resources'">
+                <i class="fa-solid fa-list-ul"></i>&nbsp;&nbsp;Ver la lista de recursos
+            </button>
+        </nav>
+
+        <main>
+            <p th:if="${resource == null}">El recurso no existe</p>
+            <div class="table-responsive">
+            <table th:if="${resource}" id="resourceDetail" class="table border shadow-sm">
+                <thead>
+                <tr>
+                    <th scope="col" class="visually-hidden avatar-col-size">Imagen</th>
+                    <th scope="col">Recurso</th>
+                    <th scope="col">Tipo</th>
+                    <th scope="col">Autor</th>
+                    <th scope="col">Descripción</th>
+                    <th scope="col" th:if="${#sets.size(resource.tags) > 0}">Etiquetas</th>
+                    <th scope="col" sec:authorize="isAuthenticated()" class="visually-hidden">Acciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="avatar-col-size">
+                        <img th:src="${resource.getImageUrl() != '' ? resource.getImageUrl() : '/img/noImage.jpg'}"
+                             class="avatar ms-1" th:alt="${resource.getTitle()}">
+                    </td>
+                    <td>
+                        <a th:href="${resource.url}" target="_blank" th:text="${resource.title}"></a>
+                    </td>
+                    <td th:text="${resource.type}"></td>
+                    <td th:text="${resource.author}"></td>
+                    <td th:utext="${resource.description}"></td>
+                    <td th:if="${#sets.size(resource.tags) > 0}">
+                        <th:block th:each="tag : ${resource.tags}" >
+                            <span th:text="${tag}" class="badge rounded-pill text-bg-success"></span>
+                        </th:block>
+                    </td>
+                    <td sec:authorize="isAuthenticated()" class="action-col-size">
+                        <div class="float-end">
+                            <a th:href="'/resources/update/' + ${resource.id}" title="Editar el recurso"
+                               class="btn btn-sm btn-warning btn-mini-size me-1">
+                                <i class="fa-solid fa-pen-to-square"></i><span class="visually-hidden">Editar</span></a>
+                            <button th:if="${#authentication.principal.role.isAdmin()}"
+                                    type="button" class="btn btn-sm btn-danger btn-mini-size me-1" title="Eliminar el recurso"
+                                    data-bs-toggle="modal" data-bs-target="#confirm"
+                                    th:data-bs-url="'/resources/delete/' + ${resource.id}"
+                                    th:data-bs-text="'¿Deseas eliminar el recurso «' + ${resource.title} + '»?<br/><br/><strong>ADVERTENCIA</strong>:<br/>Al eliminar el recurso, se eliminarán los comentarios y dejará de estar en las listas asociadas.'">
+                                <i class="fa-solid fa-trash-can"></i><span class="visually-hidden">Eliminar</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            </div>
+
+            <section sec:authorize="isAuthenticated()"
+                     th:if="${lists != null && lists.size() > 0L}" class="mt-1">
+                <h2>Listas del recurso</h2>
+                <ul class="list-inline">
+                    <li th:each="list : ${lists}" class="list-inline-item">
+                        <a th:href="'/resourcelists/' + ${list.id}" class="btn btn-outline-primary btn-sm shadow-sm">
+                            <i class="fa-solid fa-list-ul me-2"></i><pan th:text="${list.name}"></pan></a>
+                    </li>
+                </ul>
+            </section>
+
+            <section sec:authorize="isAuthenticated()">
+                <h2 th:if="${resource}">Valoraciones</h2>
+
+                <nav>
+                    <button class="btn btn-primary btn-sm shadow-sm"
+                            th:onclick="|location.href='/ratings/create/' + ${resource.id}|">
+                        <i class="fa-solid fa-circle-plus"></i>&nbsp;&nbsp;Añadir una valoración a esta lista
+                    </button>
+                </nav>
+
+                <p th:if="${resource != null && ratings.size() == 0L}">No hay valoraciones</p>
+                <div class="table-responsive">
+                <table th:if="${ratings.size() > 0L}" id="ratingsList"
+                       class="table table-striped border shadow-sm">
+                    <thead>
+                    <tr>
+                        <th scope="col" class="visually-hidden avatar-col-size">Avatar</th>
+                        <th scope="col">Usuario</th>
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Título</th>
+                        <th scope="col">Comentario</th>
+                        <th scope="col">Puntuación</th>
+                        <th scope="col" th:if="${#authentication.principal.role.isAdmin()}" class="visually-hidden">Acciones</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr th:each="rating : ${ratings}">
+                        <td class="avatar-col-size">
+                            <img th:src="${rating.user.getImageUrl() != '' ? rating.user.getImageUrl() : '/img/user/noUser.png'}"
+                                 class="avatar rounded-circle ms-1" th:alt="${rating.user.getUsername()}">
+                        </td>
+                        <td th:text="${rating.user.name}"></td>
+                        <td th:text="${#temporals.format(rating.createdAt, 'dd/MM/yyyy HH:mm')}"></td>
+                        <td th:text="${rating.title}" class="fw-bold"></td>
+                        <td th:utext="${rating.comment}"></td>
+                        <td th:text="${'⭐' * rating.score.intValue()}">
+                        </td>
+                        <td class="action-col-size">
+                            <div class="float-end" th:if="${rating.user.id == #authentication.principal.id or #authentication.principal.role.isAdmin()}">
+                                <a th:href="'/ratings/update/' + ${rating.id}" title="Editar la valoración"
+                                   class="btn btn-sm btn-warning btn-mini-size me-1">
+                                    <i class="fa-solid fa-pen-to-square"></i><span class="visually-hidden">Editar</span></a>
+                                <button type="button" class="btn btn-sm btn-danger btn-mini-size me-1" title="Eliminar la valoración"
+                                        data-bs-toggle="modal" data-bs-target="#confirm"
+                                        th:data-bs-url="'/ratings/delete/' + ${rating.id}"
+                                        th:data-bs-text="'¿Deseas eliminar la valoración «' + ${rating.title} + '»?'">
+                                    <i class="fa-solid fa-trash-can"></i><span class="visually-hidden">Eliminar</span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+
+                </table>
+                </div>
+
+                <p th:if="${ratings != null && ratings.size() > 0}"
+                   th:text="'Total de valoraciones: ' + ${ratings.size()}"></p>
+            </section>
+        </main>
+
+    </div>
+    <footer th:replace="~{fragment/footer :: footer}"></footer>
+</body>
+</html>

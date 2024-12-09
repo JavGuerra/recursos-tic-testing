@@ -1,0 +1,60 @@
+<nav th:fragment="navbar" class="navbar navbar-expand-lg bg-custom-purple bg-gradient shadow" data-bs-theme="dark">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <img src="/img/rtic.svg" alt="Logotipo de la aplicación" width="30" height="24" class="d-inline-block align-text-top">
+      Recursos TIC
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarApp" aria-controls="navbarApp" aria-expanded="false" aria-label="Alternar navegación">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarApp">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" href="/resources">
+            <i class="fa-solid fa-layer-group"></i>&nbsp;&nbsp;Recursos
+          </a>
+        </li>
+        <li class="nav-item" sec:authorize="isAuthenticated()">
+          <a class="nav-link" href="/resourcelists">
+            <i class="fa-solid fa-table-list"></i>&nbsp;&nbsp;Listas
+          </a>
+        </li>
+        <li class="nav-item" sec:authorize="isAuthenticated()"
+            th:if="${#authentication.principal.role.isAdmin()}">
+          <a class="nav-link" href="/users">
+            <i class="fa-solid fa-users"></i>&nbsp;&nbsp;Usuarios
+          </a>
+        </li>
+      </ul>
+
+      <ul class="navbar-nav mb-2 mb-lg-0">
+        <li sec:authorize="isAnonymous()" class="nav-item">
+          <a th:href="@{/login}" class="nav-link">
+            <i class="fa-solid fa-right-to-bracket"></i>&nbsp;&nbsp;Iniciar&nbsp;sesión
+          </a>
+        </li>
+
+        <li sec:authorize="isAnonymous()" class="nav-item">
+          <a th:href="@{/users/create}" class="nav-link">
+            <i class="fa-solid fa-user"></i>&nbsp;&nbsp;Registrarse
+          </a>
+        </li>
+
+        <li sec:authorize="isAuthenticated()" class="nav-item">
+          <a th:href="@{/users/{id}(id=${#authentication.getPrincipal().getId()})}" class="nav-link">
+            <img th:src="${#authentication.principal.getImageUrl() != '' ? #authentication.principal.getImageUrl() : '/img/user/noUser.png'}"
+                 class="avatarNav rounded-circle" th:alt="${#authentication.getPrincipal().getUsername()}">
+            &nbsp;&nbsp;<span sec:authentication="principal.username"></span>
+          </a>
+        </li>
+
+        <ii sec:authorize="isAuthenticated()" class="nav-item">
+          <a id="salir" th:href="@{/logout}" class="nav-link">
+            <i class="fa-solid fa-right-from-bracket"></i>&nbsp;&nbsp;Salir
+          </a>
+        </ii>
+      </ul>
+
+    </div>
+  </div>
+</nav>

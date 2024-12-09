@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Detalle de mi lista</title>
+    <th:replace th:replace="~{fragment/meta :: meta}" />
+</head>
+<body class="d-flex flex-column vh-100">
+    <th:block th:replace="~{fragment/spinner :: spinner}" />
+    <th:block th:replace="~{fragment/modal :: modal}" />
+    <th:block th:replace="~{fragment/navbar :: navbar}" />
+    <div class="container mt-4 flex-grow-1">
+
+        <header>
+            <h1 th:if="${resourcelist}" th:text="${resourcelist.name}"></h1>
+            <h1 th:unless="${resourcelist}">Detalle de mi lista</h1>
+        </header>
+
+        <div th:if="${resourcelist.description != null}">
+            <td th:utext="${resourcelist.description}"></td>
+        </div>
+
+        <nav id="actions">
+            <a href="/resourcelists" class="btn btn-primary btn-sm shadow-sm me-2">
+                <i class="fa-solid fa-list-ul"></i>&nbsp;&nbsp;Ver todas mis listas</a>
+            <a th:href="'/resourcelists/update/' + ${resourcelist.id}"
+               class="btn btn-sm btn-warning shadow-sm me-2">
+                <i class="fa-solid fa-pen-to-square"></i>&nbsp;&nbsp;Editar esta lista</a>
+            <button type="button" class="btn btn-sm btn-danger shadow-sm"
+                    data-bs-toggle="modal" data-bs-target="#confirm"
+                    th:data-bs-url="'/resourcelists/delete/' + ${resourcelist.id}"
+                    th:data-bs-text="'¿Deseas eliminar la lista «' + ${resourcelist.name} + '»?'">
+                <i class="fa-solid fa-trash-can"></i>&nbsp;&nbsp;Eliminar la lista
+            </button>
+        </nav>
+
+        <main sec:authorize="isAuthenticated()" class="mt-3">
+            <h2 th:if="${resourcelist}">Recursos de la lista</h2>
+
+            <nav>
+                <a th:href="'/resourcelists/add/' + ${resourcelist.id}"
+                   class="btn btn-primary btn-sm shadow-sm me-2">
+                    <i class="fa-solid fa-circle-plus"></i>&nbsp;&nbsp;Añadir recursos a esta lista
+                </a>
+                <a th:href="'/resources/create/' + ${resourcelist.id}"
+                   class="btn btn-primary btn-sm shadow-sm me-2">
+                    <i class="fa-solid fa-circle-plus"></i>&nbsp;&nbsp;Añadir un recurso nuevo a esta lista
+                </a>
+                <button th:if="${resources.size() > 0}" type="button" class="btn btn-danger shadow-sm btn-sm"
+                        data-bs-toggle="modal" data-bs-target="#confirm"
+                        th:data-bs-url="'/resourcelists/remove/' + ${resourcelist.id}"
+                        data-bs-text="¿Deseas eliminar todos los recursos incluidos en esta lista?">
+                    <i class="fa-solid fa-circle-xmark"></i>&nbsp;&nbsp;Eliminar todas los recursos de la lista
+                </button>
+            </nav>
+
+            <p th:if="${resourcelist != null && resources.size() == 0L}">No hay recursos en esta lista</p>
+            <div class="table-responsive">
+            <table th:if="${resources.size() > 0L}" id="resourcesList" class="table table-striped border shadow-sm">
+                <thead>
+                    <tr>
+                        <th scope="col" class="visually-hidden avatar-col-size">Imagen</th>
+                        <th scope="col">Recurso</th>
+                        <th scope="col">Tipo</th>
+                        <th scope="col">Descripción</th>
+                        <th scope="col" class="visually-hidden">Acciones</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr th:each="resource : ${resources}">
+                        <td class="avatar-col-size">
+                            <img th:src="${resource.getImageUrl() != '' ? resource.getImageUrl() : '/img/noImage.jpg'}"
+                                 class="avatar ms-1" th:alt="${resource.getTitle()}">
+                        </td>
+                        <td>
+                            <a th:href="${resource.url}" target="_blank" th:text="${resource.title}"></a>
+                        </td>
+                        <td th:text="${resource.type}"></td>
+                        <td th:utext="${resource.description}"></td>
+                        <td sec:authorize="isAuthenticated()" class="action-col-size">
+                            <div class="float-end">
+                                <a th:href="'/resources/' + ${resource.id}" title="Ver el recurso"
+                                   class="btn btn-sm btn-info btn-mini-size me-1">
+                                    <i class="fa-solid fa-eye"></i><span class="visually-hidden">Ver</span></a>
+                                <a th:href="'/resources/update/' + ${resource.id} + '/' + ${resourcelist.id}"
+                                   class="btn btn-sm btn-warning btn-mini-size me-1" title="Editar el recurso">
+                                    <i class="fa-solid fa-pen-to-square"></i><span class="visually-hidden">Editar</span></a>
+                                <button type="button" class="btn btn-sm btn-danger btn-mini-size me-1" title="Quitar el recurso"
+                                        data-bs-toggle="modal" data-bs-target="#confirm"
+                                        th:data-bs-url="'/resourcelists/remove/' + ${resourcelist.id} + '/' + ${resource.id}"
+                                        th:data-bs-text="'¿Deseas eliminar el recurso «' + ${resource.title} + '» de esta lista?'">
+                                    <i class="fa-solid fa-x"></i><span class="visually-hidden">Eliminar</span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+        </main>
+
+    </div>
+    <footer th:replace="~{fragment/footer :: footer}"></footer>
+</body>
+</html>

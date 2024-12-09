@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Mis listas</title>
+    <th:replace th:replace="~{fragment/meta :: meta}" />
+</head>
+<body class="d-flex flex-column vh-100">
+    <th:block th:replace="~{fragment/spinner :: spinner}" />
+    <th:block th:replace="~{fragment/modal :: modal}" />
+    <th:block th:replace="~{fragment/navbar :: navbar}" />
+    <div class="container mt-4 flex-grow-1">
+
+        <header>
+            <h1>Mis listas</h1>
+        </header>
+
+        <nav id="actions">
+            <button class="btn btn-primary btn-sm shadow-sm me-2" onclick="location.href='/resourcelists/create'">
+                <i class="fa-solid fa-circle-plus"></i>&nbsp;&nbsp;Crear una lista nueva
+            </button>
+            <button th:if="${resourcelists.size() > 0}" type="button"
+                    class="btn btn-danger shadow-sm btn-sm"
+                    data-bs-toggle="modal" data-bs-target="#confirm"
+                    data-bs-url="/resourcelists/delete"
+                    data-bs-text="¿Deseas eliminar todas tus listas de recursos?">
+                <i class="fa-solid fa-circle-xmark"></i>&nbsp;&nbsp;Eliminar todas mis listas
+            </button>
+        </nav>
+
+        <main>
+            <p th:if="${resourcelists == null || resourcelists.size() == 0}" class="mt-3">No existen listas</p>
+            <div class="table-responsive">
+            <table th:unless="${resourcelists == null || resourcelists.size() == 0}" id="resourceLists" class="table w-100 table-striped border shadow-sm">
+                <thead>
+                <tr>
+                    <th scope="col" class="visually-hidden list-col-size">Imagen</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Recursos</th>
+                    <th scope="col">Descripción</th>
+                    <th scope="col" class="visually-hidden">Acciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="resourcelist : ${resourcelists}">
+                    <td class="list-col-size"><i class="fa-solid fa-list-ul ms-1"></i></td>
+                    <td>
+                        <span th:text="${resourcelist.name}" class="fw-bold"></span>
+                    </td>
+                    <td th:text="${resourcelist.resources.size()}"></td>
+                    <td th:utext="${resourcelist.description}"></td>
+                    <td class="action-col-size">
+                        <div class="float-end">
+                            <a th:href="'/resourcelists/' + ${resourcelist.id}" title="Ver la lista"
+                               class="btn btn-sm btn-info btn-mini-size me-1">
+                                <i class="fa-solid fa-eye"></i><span class="visually-hidden">Ver</span></a>
+                            <a th:href="'/resourcelists/update/' + ${resourcelist.id}" title="Editar la lista"
+                               class="btn btn-sm btn-warning btn-mini-size me-1">
+                                <i class="fa-solid fa-pen-to-square"></i><span class="visually-hidden">Editar</span></a>
+                            <button type="button" class="btn btn-sm btn-danger btn-mini-size me-1" title="Eliminar la lista"
+                                    data-bs-toggle="modal" data-bs-target="#confirm"
+                                    th:data-bs-url="'/resourcelists/delete/' + ${resourcelist.id}"
+                                    th:data-bs-text="'¿Deseas eliminar la lista «' + ${resourcelist.name} + '»?'">
+                                <i class="fa-solid fa-trash-can"></i><span class="visually-hidden">Eliminar</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            </div>
+
+            <p th:if="${resourcelists != null && resourcelists.size() > 0}"
+               th:text="'Total de listas: ' + ${resourcelists.size()}"></p>
+        </main>
+
+    </div>
+    <footer th:replace="~{fragment/footer :: footer}"></footer>
+</body>
+</html>

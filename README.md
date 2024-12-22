@@ -16,6 +16,8 @@ Los tests han sido realizados con JUnit, Mockito, Selenium, JaCoCo, GitHub Actio
 
 La planificación y codificación se han llevado a cabo usando Trello y GitHub.
 
+![Banner](src/main/resources/static/img/banner.png)
+
 ## Destacados
 
 Además de los requisitos del MVP, se han incluido las siguientes funcionalidades:
@@ -55,8 +57,14 @@ Para generar un informe de cobertura de testing, se puede ejecutar el comando `m
 
 # Autores
 
-Desarrollado por [Javier](https://github.com/JavGuerra), [Kevin](https://github.com/kevinzamoraa) y [Marina](https://github.com/MarinaVallejo89)
+Desarrollado por [Javier](https://github.com/JavGuerra) y [Kevin](https://github.com/kevinzamoraa).
 
 # Licencia
 
 Este proyecto está licenciado bajo licencia [GPL v.3](https://www.gnu.org/licenses/gpl-3.0.html).
+
+# Saber más
+
+Artículos informativos elaborados por el autor relacionados con esta aplicación:
+
+- [Spinner loader en Thymeleaft](https://javguerra.github.io/blog/loader-thymeleaft/)  

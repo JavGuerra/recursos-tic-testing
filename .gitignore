@@ -204,4 +204,6 @@ README.html
 TODO.md
 accesos.md
 java-version.sh
+Dockerfile.local
+docker.sh
 docker-compose.yml

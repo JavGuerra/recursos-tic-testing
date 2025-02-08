@@ -35,6 +35,16 @@ public class Utility {
     }
 
     /**
+     * Lanza una excepción si el id no es un número entero positivo
+     *
+     * @param id Integer
+     */
+    public static void validateId(Long id) {
+        if (invalidIntPosNumber(id) || id == 0)
+            throw new IllegalArgumentException(ErrMsg.INVALID_ID);
+    }
+
+    /**
      * Comprueba si esta abierta alguna sesión de usuario.
      * @return true si está abierta la sesión / false en caso contrario
      */

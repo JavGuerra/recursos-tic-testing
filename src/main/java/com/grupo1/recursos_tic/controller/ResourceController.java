@@ -22,6 +22,7 @@ import static com.grupo1.recursos_tic.util.Utility.*;
 
 @Controller
 @AllArgsConstructor
+@RequestMapping("resources")
 public class ResourceController {
 
     private ResourceService resourceService;
@@ -36,7 +37,12 @@ public class ResourceController {
         return null;
     }
 
-    @GetMapping("resources")
+    /**
+     * Muestra la lista de recursos
+     * @param model Model
+     * @return String
+     */
+    @GetMapping("")
     public String findAll(Model model) {
         model.addAttribute("resources", resourceService.findAll());
         return "resource/list";
@@ -44,10 +50,15 @@ public class ResourceController {
 
     // Probar @AuthenticationPrincipal String username
     // https://www.baeldung.com/get-user-in-spring-security
-    @GetMapping("resources/{id}")
+    /**
+     * Muestra el recurso con el id pasado como parámetro
+     * @param model Model
+     * @param id Long
+     * @return String
+     */
+    @GetMapping("/{id}")
     public String findById(Model model, @PathVariable Long id) {
-        if (invalidIntPosNumber(id) || id == 0)
-            throw new IllegalArgumentException(ErrMsg.INVALID_ID);
+        validateId(id);
 
         Resource resource = resourceService.findById(id)
                 .orElseThrow(() -> new NoSuchElementException(ErrMsg.NOT_FOUND));
@@ -60,16 +71,26 @@ public class ResourceController {
         return "resource/detail";
     }
 
-    @GetMapping("resources/create")
+    /**
+     * Muestra el formulario para crear un recurso
+     * @param model Model
+     * @return String
+     */
+    @GetMapping("/create")
     public String getFormToCreate(Model model) {
         model.addAttribute("resource", new Resource());
         return "resource/form";
     }
 
-    @GetMapping("resources/create/{listId}")
+    /**
+     * Muestra el formulario para crear un recurso dentro de una lista de recursos
+     * @param model Model
+     * @param listId Long
+     * @return String
+     */
+    @GetMapping("/create/{listId}")
     public String getFormToCreateNew(Model model, @PathVariable Long listId) {
-        if (invalidIntPosNumber(listId) || listId == 0)
-            throw new IllegalArgumentException(ErrMsg.INVALID_ID);
+        validateId(listId);
 
         if (!resourceListsService.existsById(listId))
             throw new NoSuchElementException(ErrMsg.NOT_FOUND);
@@ -80,10 +101,15 @@ public class ResourceController {
         return "resource/form";
     }
 
-    @GetMapping("resources/update/{id}")
+    /**
+     * Muestra el formulario para actualizar un recurso
+     * @param model Model
+     * @param id Long
+     * @return String
+     */
+    @GetMapping("/update/{id}")
     public String getFormToUpdate(Model model, @PathVariable Long id) {
-        if (invalidIntPosNumber(id) || id == 0)
-            throw new IllegalArgumentException(ErrMsg.INVALID_ID);
+        validateId(id);
 
         Resource resource = resourceService.findById(id)
                 .orElseThrow(() -> new NoSuchElementException(ErrMsg.NOT_FOUND));
@@ -93,10 +119,17 @@ public class ResourceController {
         return "resource/form";
     }
 
-    @GetMapping("resources/update/{id}/{listId}")
+    /**
+     * Muestra el formulario para actualizar un recurso dentro de una lista de recursos
+     * @param model Model
+     * @param id Long
+     * @param listId Long
+     * @return String
+     */
+    @GetMapping("/update/{id}/{listId}")
     public String getFormToUpdateAndList(Model model, @PathVariable Long id, @PathVariable Long listId) {
-        if (invalidIntPosNumber(id) || id == 0 || invalidIntPosNumber(listId) || listId == 0)
-            throw new IllegalArgumentException(ErrMsg.INVALID_ID);
+        validateId(id);
+        validateId(listId);
 
         if (!resourceListsService.existsById(listId))
             throw new NoSuchElementException(ErrMsg.NOT_FOUND);
@@ -110,7 +143,13 @@ public class ResourceController {
         return "resource/form";
     }
 
-    @PostMapping("resources")
+    /**
+     * Guarda un recurso
+     * @param resource Resource
+     * @param listId Long
+     * @return String
+     */
+    @PostMapping("")
     public String save(@ModelAttribute Resource resource,
                        @RequestParam(required = false) Long listId) {
         if (listId != null && listId <= 0)
@@ -122,13 +161,13 @@ public class ResourceController {
 
         if (resource.getId() == null) { // crear
             Resource savedResource = resourceService.save(resource);
-            if (listId != null){
+            if (listId != null) {
                 ResourceList resourceList = resourceListsService.findById(listId)
                         .orElseThrow(() -> new EntityNotFoundException(ErrMsg.NOT_FOUND));
                 resourceList.addResource(savedResource);
                 resourceListsService.save(resourceList);
                 return "redirect:/resourcelists/" + listId;
-            };
+            }
             return "redirect:/resources/" + savedResource.getId();
         } else { // editar
             return resourceService.findById(resource.getId()).map(optResource -> {
@@ -140,10 +179,14 @@ public class ResourceController {
         }
     }
 
-    @GetMapping("resources/delete/{id}")
+    /**
+     * Elimina un recurso
+     * @param id Long
+     * @return String
+     */
+    @GetMapping("/delete/{id}")
     public String deleteById(@PathVariable Long id) {
-        if (invalidIntPosNumber(id) || id == 0)
-            throw new IllegalArgumentException(ErrMsg.INVALID_ID);
+        validateId(id);
 
         if (!resourceService.existsById(id))
             throw new NoSuchElementException(ErrMsg.NOT_FOUND);
@@ -151,17 +194,25 @@ public class ResourceController {
         try {
             resourceService.removeResourceWithDependencies(id);
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT); // 409 status().isConflict()
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT, "Error al eliminar el recurso: " + e.getMessage());
+            // 409 status().isConflict()
         }
         return "redirect:/resources";
     }
 
+    /**
+     * Elimina todos los recursos
+     * @return String
+     */
     @GetMapping("resources/delete")
     public String deleteAll() {
         try {
             resourceService.deleteAll();
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT); // 409 status().isConflict()
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT, "Error al eliminar el recurso: " + e.getMessage());
+            // 409 status().isConflict()
         }
         if (resourceService.count() != 0)
             throw new RuntimeException(ErrMsg.NOT_DELETED);
